@@ -1,0 +1,10 @@
+Invoice #1042
+Vendor: Fresh Farms Supplies
+Date: 2024-01-15
+Items:
+- Tomatoes: 20kg @ Rs.40/kg = Rs.800
+- Onions: 15kg @ Rs.35/kg = Rs.525
+- Rice: 50kg @ Rs.60/kg = Rs.3000
+- Paneer: 5kg @ Rs.320/kg = Rs.1600
+Total: Rs.5925
+Payment: Cash

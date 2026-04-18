@@ -1,0 +1,11 @@
+date,item,quantity,unit_price,total,service
+2024-01-15,Masala Dosa,45,100,4500,breakfast
+2024-01-15,Filter Coffee,80,30,2400,breakfast
+2024-01-15,Veg Thali,60,150,9000,lunch
+2024-01-15,Paneer Butter Masala,35,220,7700,dinner
+2024-01-16,Masala Dosa,52,100,5200,breakfast
+2024-01-16,Filter Coffee,91,30,2730,breakfast
+2024-01-16,Veg Thali,48,150,7200,lunch
+2024-01-16,Chicken Biryani,40,280,11200,dinner
+2024-01-17,Masala Dosa,38,100,3800,breakfast
+2024-01-17,Veg Thali,55,150,8250,lunch

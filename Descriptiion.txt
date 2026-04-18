@@ -1,0 +1,24 @@
+1. models.py defines the two data contracts for the ingestion pipeline: DocumentChunk is the unit of storage (one embeddable text block with its metadata), and BusinessDocument is the upload receipt (one record per file). Pydantic enforces validity at construction time so bad data never reaches the vector store.
+
+Basics: 
+BaseModel — base class that gives you automatic type validation, .model_dump(), .model_json_schema(), and clear error messages for free.
+field_validator — decorator to attach custom validation logic to a specific field.
+@classmethod — required by Pydantic v2 for validators; the validator runs on the class, not an instance, because it fires before the object is fully constructed.
+
+Interview angle: "Why Pydantic over a plain dataclass?" — Pydantic validates at construction time, raises clear ValidationError with field-level messages, and integrates directly with FastAPI request/response schemas. Dataclasses don't validate types at runtime.
+
+Document Chunk: 
+Fields:
+
+Field	       Type	Purpose
+chunk_id	str	Unique ID for this chunk — used as the key in ChromaDB
+content	        str	The actual text that gets embedded
+source_file	str	Which file this chunk came from — needed for citations
+chunk_index	int	Position of this chunk within its document — preserves order
+metadata	dict	Any extra info (page number, row range, etc.) — flexible
+
+Interview angle: "Why validate chunk length?" — A chunk under 10 characters is almost certainly a chunking bug (stray punctuation, empty row). Catching it here means the error surfaces at ingestion time, not silently at query time when retrieval quality degrades.
+
+BusinessDocument is the parent (one per file). DocumentChunk is the child (many per file). They are linked by source_file — DocumentChunk.source_file matches BusinessDocument.filename.
+
+2. DocumentLoader.load() is the public API — it validates, routes, and returns list[str]. The three private loaders each solve a different format challenge: CSV needs row-to-sentence conversion for good embeddings, PDF needs page-by-page extraction and whitespace cleanup, TXT needs paragraph splitting. The output is always the same type, so the chunker downstream doesn't need to know anything about the original file format.
